@@ -1,6 +1,20 @@
-/* @font-face {
-	font-family: '...';
-	src: url('/fonts/...');
+@font-face {
+	font-family: 'Jubel';
+	src: url('/public/fonts/Jubel/Jubel-Bold.ttf');
+	font-weight: Bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Jubel';
+	src: url('/public/fonts/Jubel/Jubel-Medium.ttf');
 	font-weight: normal;
 	font-style: normal;
-} */
+}
+
+@font-face {
+	font-family: 'Jubel';
+	src: url('/public/fonts/Jubel/Jubel-Regular.ttf');
+	font-weight: 400;
+	font-style: normal;
+}
