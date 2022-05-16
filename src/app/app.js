@@ -26,12 +26,7 @@ import App from './App.vue';
 import store from '../views/store/store'
 import routes from '../routes.js';
 
-const app_router = createRouter({
-	routes: routes,
-	history: createWebHistory()
-})
-
 createApp(App)
 	.use(store)
-	.use(app_router)
+	.use(routes)
 	.mount('#app');

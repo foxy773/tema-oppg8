@@ -29,7 +29,13 @@ export default {
 		  title: "Credits",
 		  type: "number",
 		  readOnly: true,
-		  initialValue: 0,
+		  initialValue: 0
+	  },
+	  {
+		  name: "admin",
+		  title: "Admin",
+		  type: "boolean",
+		  initialValue: false
 	  }
 	],
 	preview: {

@@ -1,16 +1,20 @@
 <template>
-  <div class="profile" v-if="getUserLoggedIn">
+  <div class="profile" v-if="getUserInfo">
     <div class="profile__img-container">
       <img
         class="img-container__image"
-        :src="getUserInfo.image"
+        :src="getUserInfo.image || '/images/default-profile.png'"
         alt="" />
           <input @change="this.onProfileImgChange($event)" class="img-container__input" type="file" accept=".jpg, .jpeg, .png">
           <div class="img-container__icon" src="" alt=""></div>
     </div>
 
     <div class="profile__info">
-      <p class="info__name">{{ getUserInfo.username }}</p>
+      <div class="info__username">
+        <p v-if="!this.changeUsername" class="username__name">{{ getUserInfo.username }}</p>
+        <button @click="usernameChange" class="username__button"></button>
+        <input v-if="this.changeUsername" type="text">
+      </div>
       <p class="info__email">{{ getUserInfo.email }}</p>
     </div>
 
@@ -29,7 +33,7 @@
         <p class="level__text">Level</p>
         <div class="level__display">
           <img class="display__icon" src="images/level-up.png" alt="" />
-          <p class="display__amount">900</p>
+          <p class="display__amount">0</p>
         </div>
       </div>
     </div>
@@ -40,16 +44,25 @@
 import sanity from "../sanity.js"
 export default {
   data() {
-    return {};
+    return {
+      changeUsername: false
+    };
+  },
+
+  created() {
+   
+  },
+
+  mounted() {
+   this.checkIfUserLoggedIn()
   },
 
   computed: {
-    getUserInfo() {
+     getUserInfo() {
       return this.$store.getters.getAllUserData;
     },
 
     getUserLoggedIn() {
-      console.log(this.$store.getters.getUserLoggedIn)
       return this.$store.getters.getUserLoggedIn
     }
   },
@@ -78,9 +91,25 @@ export default {
         })
         }catch(err){
           console.log(err, "ERROR!!!")
-      }
+        }
+    },
+
+      async checkIfUserLoggedIn() {
+        let userLoggedIn = await this.getUserLoggedIn
+        console.log(userLoggedIn, "CHECKIFUSER")
+      if (userLoggedIn) {
+
+    }else {
+      await this.$router.push({name: "home"})
     }
   },
+
+    usernameChange() {
+      this.changeUsername = !this.changeUsername
+    }
+  },
+
+  
 };
 </script>
 
@@ -152,9 +181,19 @@ export default {
   text-align: center;
 }
 
-.info__name {
+.info__username {
+  display: flex;
+}
+
+.username__name {
   font-size: 3rem;
   font-weight: 600;
+}
+
+.username__button {
+  width: 25px;
+  height: 25px;
+  padding-left: 1rem;
 }
 
 .info__email {

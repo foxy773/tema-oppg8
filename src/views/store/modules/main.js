@@ -27,7 +27,7 @@ export default {
 
 		updateUserData(state, data) {
 			state.loggedInUser = data
-			console.log(data, "hello")
+			
 		},
 
 		loadingSwitch(state, data) {
@@ -56,16 +56,17 @@ export default {
 		updateUserData({commit}, data) {
 			console.log(data, "User sendt too store")
 			commit("updateUserData", data)
+			commit("loadingSwitch", false)
 		},
 
 		loadingSwitch({commit}, data) {
 			commit("loadingSwitch", data)
-			console.log("loadingsw")
 		},
 
 		updateUserLoggedIn({commit}, data) {
 			commit("updateUserLoggedIn", data)
 			console.log("updatedUserLoginStatus")
+			commit("loadingSwitch", false)
 		}
 	},
 

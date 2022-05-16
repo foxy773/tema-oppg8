@@ -34,7 +34,7 @@ export default {
   computed: {
     getUserLoggedIn() {
         return this.$store.getters.getUserLoggedIn
-  }
+    }
   },
 
   methods: {
@@ -57,6 +57,7 @@ export default {
   background: var(--background2);
   padding: 0.2rem;
   display: flex;
+  z-index: 100;
 }
 
 .header__content {

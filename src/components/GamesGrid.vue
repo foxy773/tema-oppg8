@@ -19,8 +19,13 @@
 </template>
 
 <script>
+import { onMounted } from '@vue/runtime-core'
 export default {
-
+	data() {
+		return {
+			authenticated: false
+		}
+	}
 }
 </script>
 
@@ -52,6 +57,7 @@ export default {
 	position: absolute;
 	font-size: 3rem;
 	font-family: maagkramp;
+	cursor: pointer;
 }
 
 .game__image {
@@ -69,5 +75,6 @@ export default {
 .game-list__game:hover .game__name  {
 	font-size: 3.2rem;
 	color: var(--highlight);
+	text-shadow: 0 3px #ff7434, 0 5px #ff7434, 0 7px #ff7434;
 }
 </style>

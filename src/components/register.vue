@@ -83,7 +83,7 @@ export default {
 
         async registerUserSanity(data) {
             try{
-            await sanity.create({ _type: "users", uid: data.user.uid, email: data.user.email, credits: 1000 })
+            await sanity.create({ _type: "users", uid: data.user.uid, email: data.user.email, credits: 1000, admin: false, username: data.user.email })
             .then((res) => {
                 console.log("User was stored in Sanity", res)
             })

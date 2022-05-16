@@ -1,7 +1,7 @@
 <template>
     <Header v-if="!getLoadingState"/>
     <RouterView v-if="!getLoadingState"/>
-  <Loading v-if="getLoadingState" />
+  	<Loading v-if="getLoadingState === true" />
 
   <SignIn v-if="getSignInVisible" />
   <Register v-if="getRegisterVisible" />
@@ -74,7 +74,6 @@ export default {
         } else {
           this.$store.dispatch("updateUserLoggedIn", false);
         }
-        this.$store.dispatch("loadingSwitch", false);
       });
     },
   },
