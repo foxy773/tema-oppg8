@@ -2,13 +2,13 @@
   <div class="navBar">
       <ul class="navBar__list">
           <li class="list__item">
-              <button class="item__button">
+              <button @click="registerVisible" class="item__button">
                   <img src="" alt="">
                   <p class="button__text">Registrer deg her</p>
             </button>
           </li>
           <li class="list__item">
-              <button class="item__button">
+              <button @click="signInVisible" class="item__button">
                   <p class="button__text">Logg inn</p>
                   <!-- <img class="button__img" src="/images/right-arrow.png" alt=""> -->
             </button>
@@ -19,7 +19,27 @@
 
 <script>
 export default {
+    data() {
+        return {
 
+        }
+    },
+
+    computed: {
+        
+    },
+
+    methods: {
+        signInVisible() {
+            this.$store.dispatch("switchSignInVisible")
+            console.log("store")
+        },
+
+        registerVisible() {
+            this.$store.dispatch("switchRegisterVisible")
+            console.log("storeReg")
+        }
+    }
 }
 </script>
 
@@ -57,7 +77,8 @@ export default {
 
     .item__button:hover {
         -webkit-transform: scale(1.03);
-        box-shadow: 0px 4px 7px 0px rgba(0,0,0,0.75);
+        box-shadow: 0px 6px 0px 0px rgba(0,0,0,0.5);
+	    font-size: 1.02rem;
     }
 
     .button__text {
