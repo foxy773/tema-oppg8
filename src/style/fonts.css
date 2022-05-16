@@ -18,3 +18,11 @@
 	font-weight: 400;
 	font-style: normal;
 }
+
+
+@font-face {
+	font-family: 'maagkramp';
+	src: url('/public/fonts/maagkramp/maagkramp.ttf');
+	font-weight: normal;
+	font-style: normal;
+}
