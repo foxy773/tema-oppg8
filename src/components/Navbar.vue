@@ -45,7 +45,6 @@ export default {
 
 <style>
     .navBar{
-        width: 16rem;
         height: 100%;
         background: inherit;
         display: flex;
@@ -62,6 +61,7 @@ export default {
     .list__item {
         display: flex;
         align-items: center;
+        padding: 0 1rem;
     }
 
     .item__button {
@@ -82,7 +82,7 @@ export default {
     }
 
     .button__text {
-        font-family: var(--font-family);
+        font-family: var(--font-family), Arial, Helvetica, sans-serif;
         font-weight: 500;
         font-size: .875rem;
     }

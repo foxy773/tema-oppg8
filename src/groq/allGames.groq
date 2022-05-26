@@ -1,0 +1,9 @@
+*[_type == 'games'] {
+  gameName,
+  enabled,
+  randomNum,
+  _id,
+  thumbnail {
+	  "image": asset -> url
+  }
+}

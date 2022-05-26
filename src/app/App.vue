@@ -1,7 +1,7 @@
 <template>
-    <Header v-if="!getLoadingState"/>
-    <RouterView v-if="!getLoadingState"/>
-  	<Loading v-if="getLoadingState === true" />
+  <Header v-if="!getLoadingState"/>
+  <RouterView v-if="!getLoadingState"/>
+  <Loading v-if="getLoadingState" />
 
   <SignIn v-if="getSignInVisible" />
   <Register v-if="getRegisterVisible" />
@@ -14,7 +14,7 @@ import Register from "../components/register.vue";
 import Loading from "../components/Loading.vue";
 
 import sanity from "../sanity.js";
-import query from "../groq/users.groq?raw";
+/* import query from "../groq/usersById.groq?raw"; */
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export default {
@@ -40,7 +40,8 @@ export default {
 
     getLoadingState() {
       return this.$store.getters.getWebsiteLoading;
-    },
+    }
+
   },
 
   methods: {
@@ -53,6 +54,9 @@ export default {
                         email,
                         image,
                         credits,
+                        admin,
+                        banned,
+                        deleted,
                         _id
                       }`;
 
@@ -62,8 +66,8 @@ export default {
       this.$store.dispatch("updateUserData", sanityData[0]);
     },
 
-    onUserSignedIn() {
-      let auth = getAuth();
+    async onUserSignedIn() {
+      const auth = getAuth();
       console.log(auth, "AAAAAAAU");
       onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -83,7 +87,9 @@ export default {
     
   },
 
-  created() {},
+  created() {
+    this.onUserSignedIn();
+  },
 };
 </script>
 

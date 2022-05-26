@@ -4,16 +4,43 @@
       <img
         class="img-container__image"
         :src="getUserInfo.image || '/images/default-profile.png'"
-        alt="" />
-          <input @change="this.onProfileImgChange($event)" class="img-container__input" type="file" accept=".jpg, .jpeg, .png">
-          <div class="img-container__icon" src="" alt=""></div>
-    </div>
+        alt=""
+      />
 
+      <input
+        @change="this.onProfileImgChange($event)"
+        class="img-container__input"
+        type="file"
+        accept=".jpg, .jpeg, .png"
+      />
+      <div class="img-container__icon" src="" alt=""></div>
+    </div>
+    <div
+      class="profile__role-container"
+      @click="this.sendToAdminpanel()"
+      v-if="this.getUserInfo.admin"
+    >
+      <h3>Admin</h3>
+      <img class="role-container__badge" src="/images/admin.png" alt="" />
+    </div>
     <div class="profile__info">
       <div class="info__username">
-        <p v-if="!this.changeUsername" class="username__name">{{ getUserInfo.username }}</p>
-        <button @click="usernameChange" class="username__button"></button>
-        <input v-if="this.changeUsername" type="text">
+        <p v-if="!this.changeUsername" class="username__name">
+          {{ getUserInfo.username }}
+        </p>
+        <input
+          v-if="this.changeUsername"
+          v-model="this.username"
+          class="name__input"
+          type="text"
+        />
+        <button
+          @click="
+            usernameChange();
+            updateSanityUsername(this.username);
+          "
+          class="username__button"
+        ></button>
       </div>
       <p class="info__email">{{ getUserInfo.email }}</p>
     </div>
@@ -41,75 +68,99 @@
 </template>
 
 <script>
-import sanity from "../sanity.js"
+import sanity from "../sanity.js";
 export default {
   data() {
     return {
-      changeUsername: false
+      changeUsername: false,
+      username: null,
     };
   },
 
-  created() {
-   
-  },
+  created() {},
 
   mounted() {
-   this.checkIfUserLoggedIn()
+    this.checkIfUserLoggedIn();
   },
 
   computed: {
-     getUserInfo() {
+    getUserInfo() {
       return this.$store.getters.getAllUserData;
     },
 
     getUserLoggedIn() {
-      return this.$store.getters.getUserLoggedIn
-    }
+      return this.$store.getters.getUserLoggedIn;
+    },
   },
 
   methods: {
     onProfileImgChange(event) {
-      console.log(event.target.files)
+      console.log(event.target.files);
       const reader = new FileReader();
       reader.addEventListener("load", () => {
-      const uploaded_image = reader.result;
-      console.log(uploaded_image)
-      document.querySelector(".img-container__image").src = `${uploaded_image}`; // her
-      this.updateSanityUserImage(uploaded_image)
-    });
+        const uploaded_image = reader.result;
+        console.log(uploaded_image);
+        document.querySelector(
+          ".img-container__image"
+        ).src = `${uploaded_image}`; // her
+        this.updateSanityUserImage(uploaded_image);
+      });
 
-    reader.readAsDataURL(event.target.files[0]);
-    
+      reader.readAsDataURL(event.target.files[0]);
     },
 
     async updateSanityUserImage(image) {
-      const currentUser = this.getUserInfo
-      try{
-        await sanity.patch(currentUser._id).set({image: image}).commit()
-        .then((res) => {
-          console.log("Image updated", res)
-        })
-        }catch(err){
-          console.log(err, "ERROR!!!")
-        }
+      const currentUser = this.getUserInfo;
+      try {
+        await sanity
+          .patch(currentUser._id)
+          .set({ image: image })
+          .commit()
+          .then((res) => {
+            console.log("Image updated", res);
+          });
+      } catch (err) {
+        console.log(err, "ERROR!!!");
+      }
     },
 
-      async checkIfUserLoggedIn() {
-        let userLoggedIn = await this.getUserLoggedIn
-        console.log(userLoggedIn, "CHECKIFUSER")
-      if (userLoggedIn) {
+    async updateSanityUsername(profileUsername) {
+      this.username = this.getUserInfo.username;
+      if (
+        !this.changeUsername &&
+        profileUsername !== this.username &&
+        profileUsername.length > 3
+      ) {
+        console.log("Changing Username");
+        const currentUser = this.getUserInfo;
+        try {
+          await sanity
+            .patch(currentUser._id)
+            .set({ username: profileUsername })
+            .commit();
+        } catch (err) {
+          console.log(err, "ERROR!!!");
+        }
+      }
+    },
 
-    }else {
-      await this.$router.push({name: "home"})
-    }
-  },
+    async checkIfUserLoggedIn() {
+      let userLoggedIn = await this.getUserLoggedIn;
+      console.log(userLoggedIn, "CHECKIFUSER");
+      if (userLoggedIn) {
+      } else {
+        await this.$router.push({ name: "home" });
+      }
+    },
 
     usernameChange() {
-      this.changeUsername = !this.changeUsername
-    }
-  },
+      this.changeUsername = !this.changeUsername;
+    },
 
-  
+    sendToAdminpanel() {
+      this.$router.push({ name: "adminpanel" });
+    },
+  },
 };
 </script>
 
@@ -137,9 +188,11 @@ export default {
   position: absolute;
   border-radius: 50%;
 
-  border: 0.4rem solid #ffc000; 
+  border: 0.4rem solid #ffc000;
   overflow: hidden;
   z-index: 1;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
 }
 
 .img-container__input {
@@ -152,7 +205,7 @@ export default {
   border-radius: 50%;
 }
 
-.img-container__input:hover~.img-container__icon {
+.img-container__input:hover ~ .img-container__icon {
   opacity: 0.7;
 }
 
@@ -168,32 +221,81 @@ export default {
   background-position: center;
   background-color: #000000;
   opacity: 0;
+  padding: 1rem;
 }
 
-/* .img-container__icon:hover {
-  opacity: 0.9;
-} */
+.profile__role-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 9rem;
+  height: 4rem;
+  border-radius: 0.4rem;
+  /* color: var(--foreground); */
+  font-weight: lighter;
+  font-size: 1.2rem;
+  padding: 1rem;
+}
+
+.profile__role-container:hover {
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.role-container__badge {
+  aspect-ratio: 1 / 1;
+  height: 100%;
+  width: auto;
+}
 
 .profile__info {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  font-family: Jubel;
+  font-family: Jubel, Arial, Helvetica, sans-serif;
   text-align: center;
+  align-items: center;
+  padding: 1rem;
 }
 
 .info__username {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 65%;
 }
 
 .username__name {
+  width: 100%;
+  max-width: 25rem;
   font-size: 3rem;
   font-weight: 600;
 }
 
+.name__input {
+  width: 90%;
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+  font-family: Jubel, Arial, Helvetica, sans-serif;
+}
+
 .username__button {
-  width: 25px;
-  height: 25px;
-  padding-left: 1rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  min-height: 2.2rem;
+  min-width: 2.2rem;
+  max-width: 2.2rem;
+  max-height: 2.2rem;
+  background-image: url("/images/edit-text.png");
+  background-size: 100% 100%;
+  background-color: transparent;
+  border: 0;
+  opacity: 0.5;
+}
+
+.username__button:hover {
+  opacity: 1;
 }
 
 .info__email {
@@ -246,6 +348,6 @@ export default {
   font-size: 3rem;
   font-weight: 600;
   color: #96d94e;
-  text-shadow: 0 3px #00A42E, 0 5px #00A42E, 0 5px
+  text-shadow: 0 3px #00a42e, 0 5px #00a42e, 0 5px;
 }
 </style>

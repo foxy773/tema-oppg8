@@ -1,0 +1,11 @@
+*[_type == 'users'] {
+  uid,
+  username,
+  email,
+  image,
+  credits,
+  admin,
+  banned,
+  deleted,
+  _id
+}

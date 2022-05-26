@@ -3,6 +3,10 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import Home from './views/Home.vue';
 import Profile from './views/Profile.vue';
+import AdminPanel from "./views/AdminPanel.vue";
+import Games from "./views/Games.vue";
+import Roulette from "./views/Roulette.vue"
+
 console.log("routes")
 
 const routes = [
@@ -16,7 +20,15 @@ const routes = [
 	},
 	{ 	name: 'adminpanel',
 	 	path: '/adminpanel',
-		component: Profile
+		component: AdminPanel
+	},
+	{ 	name: 'games',
+		path: '/games',
+  		component: Games
+	},
+	{ 	name: 'roulette',
+		path: '/games/roulette',
+  		component: Roulette
 	}
 ];
 

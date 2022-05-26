@@ -3,11 +3,13 @@ export default {
 	state() {
 		return {
 			generalWebsite: {
-				loading: true
+				loading: true,
+				games: null
 			},
 
 			loggedInUser: null,
 			userLoggedIn: false,
+			allUsers: null,
 
 			userAuth: {
 				signInVisible: false,
@@ -27,7 +29,10 @@ export default {
 
 		updateUserData(state, data) {
 			state.loggedInUser = data
-			
+		},
+
+		updateAllUsers(state, data) {
+			state.allUsers = data
 		},
 
 		loadingSwitch(state, data) {
@@ -36,6 +41,10 @@ export default {
 
 		updateUserLoggedIn(state, data) {
 			state.userLoggedIn = data
+		},
+
+		updateGames(state, data) {
+			state.generalWebsite.games = data
 		}
 	},
 
@@ -53,20 +62,45 @@ export default {
 			commit("switchRegisterVisible", data)
 		},
 
-		updateUserData({commit}, data) {
+		updateUserData({commit, dispatch}, data) {
 			console.log(data, "User sendt too store")
 			commit("updateUserData", data)
-			commit("loadingSwitch", false)
+			dispatch("loadWebsite")
+		},
+
+		updateAllUsers({commit}, data) {
+			commit("updateAllUsers", data)
 		},
 
 		loadingSwitch({commit}, data) {
 			commit("loadingSwitch", data)
+			dispatch("loadWebsite")
 		},
 
-		updateUserLoggedIn({commit}, data) {
+		updateUserLoggedIn({commit, dispatch}, data) {
 			commit("updateUserLoggedIn", data)
 			console.log("updatedUserLoginStatus")
-			commit("loadingSwitch", false)
+			dispatch("loadWebsite")
+		},
+
+		updateGames({commit}, data) {
+			commit("updateGames", data)
+		},
+
+		async loadWebsite({commit, state}, data) {
+			let loggedInUserData = await state.loggedInUser
+			let userLoggedIn = await state.userLoggedIn
+			console.log(loggedInUserData, userLoggedIn, "test")
+			if (userLoggedIn === false && loggedInUserData === null) {
+				console.log("YES!")
+				commit("loadingSwitch", false)
+			} else if (userLoggedIn === true && loggedInUserData !== null) {
+				console.log("YES!")
+				commit("loadingSwitch", false)
+			} else {
+				console.log("NO!")
+				commit("loadingSwitch", true)
+			}
 		}
 	},
 
@@ -84,6 +118,10 @@ export default {
 			return state.loggedInUser
 		},
 
+		getAllUsers(state) {
+			return state.allUsers
+		},
+
 		getWebsiteLoading(state) {
 			return state.generalWebsite.loading
 		},
@@ -94,16 +132,10 @@ export default {
 
 		getUserLoggedIn(state) {
 			return state.userLoggedIn
-		}
-	},
+		},
 
-	computed: {
-		/* onUserSignedIn() {
-      	onAuthStateChanged(auth, (user) => {
-        if (user) {
-			  console.log(user)
-		  }
-      })
-    } */
+		getGames(state) {
+			return state.generalWebsite.games
+		}
 	}
 };

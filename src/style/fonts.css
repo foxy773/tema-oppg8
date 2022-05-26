@@ -1,28 +1,28 @@
 @font-face {
 	font-family: 'Jubel';
-	src: url('/public/fonts/Jubel/Jubel-Bold.ttf');
+	src: url('/fonts/Jubel/Jubel-Bold.ttf');
 	font-weight: Bold;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: 'Jubel';
-	src: url('/public/fonts/Jubel/Jubel-Medium.ttf');
+	src: url('/fonts/Jubel/Jubel-Medium.ttf');
 	font-weight: normal;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: 'Jubel';
-	src: url('/public/fonts/Jubel/Jubel-Regular.ttf');
-	font-weight: 400;
+	src: url('/fonts/Jubel/Jubel-Regular.ttf');
+	font-weight: lighter;
 	font-style: normal;
 }
 
 
 @font-face {
 	font-family: 'maagkramp';
-	src: url('/public/fonts/maagkramp/maagkramp.ttf');
+	src: url('/fonts/maagkramp/maagkramp.ttf');
 	font-weight: normal;
 	font-style: normal;
 }
