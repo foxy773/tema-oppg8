@@ -1,6 +1,6 @@
 <template>
   <Header v-if="!getLoadingState"/>
-  <RouterView v-if="!getLoadingState"/>
+  <RouterView v-if="!getLoadingState" v-on:updateUserInfo="onUserSignedIn()"/>
   <Loading v-if="getLoadingState" />
 
   <SignIn v-if="getSignInVisible" />
@@ -98,11 +98,4 @@ export default {
 @import "../style/variables.css";
 @import "../style/fonts.css";
 @import "../style/style.css";
-
-.mainView {
-  width: 100%;
-  height: 100%;
-  max-height: 100%;
-  max-width: 100%;
-}
 </style>

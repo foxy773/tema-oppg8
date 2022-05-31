@@ -41,19 +41,47 @@ export default {
 				{ color: "red", number: 3 },
 				{ color: "black", number: 26 }
 			],
+			rouletteChipsPallet: [
+				{ value: 1, chipDisplay: "1" },
+				{ value: 10, chipDisplay: "10" },
+				{ value: 100, chipDisplay: "100" },
+				{ value: 1e3, chipDisplay: "1K" },
+				{ value: 1e4, chipDisplay: "10K" },
+				{ value: 1e5, chipDisplay: "100K" },
+				{ value: 1e6, chipDisplay: "1M" },
+				{ value: 1e7, chipDisplay: "10M" },
+				{ value: 1e8, chipDisplay: "100M" },
+				{ value: 1e9, chipDisplay: "1B" },
+				{ value: 1e10, chipDisplay: "10B" },
+				{ value: 1e11, chipDisplay: "100B" }
+			],
 			currentNumber: null,
-			numberHistory: []
+			numberHistory: [],
+			serverRoundStatusBoard:[
+			{ statusCode: 0, message: "Waiting for new round!" },
+			{ statusCode: 1, message: "Bets open!" },
+			{ statusCode: 2, message: "Bets closed!" },
+			{ statusCode: 3, message: "Spinning!" },
+			{ statusCode: 4, message: "Server down for maintenance!" },
+		]
 		};
 	},
 
 	mutations: {
 		updateCurrentNum(state, data) {
 			state.currentNumber = data
+		},
+
+		updateNumberHistory(state, data) {
+			state.numberHistory.push(data)
 		}
 	},
 
 	actions: {
-		updateCurrentNum({commit}, data) {
+		updateCurrentNum({ commit }, data) {
+			commit("updateCurrentNum", data)
+		},
+		updateNumberHistory({ commit }, data) {
 			commit("updateCurrentNum", data)
 		}
 	},
@@ -61,6 +89,18 @@ export default {
 	getters: {
 		getRoulettePallet(state) {
 			return state.roulettePallet
+		},
+
+		getRouletteChipsPallet(state) {
+			return state.rouletteChipsPallet
+		},
+
+		getServerRoundStatusBoard(state) {
+			return state.serverRoundStatusBoard
+		},
+
+		getnumberHistory(state) {
+			return state.numberHistory
 		}
 	}
 };
