@@ -10,9 +10,21 @@
           </div>
         </div>
       </div>
-      <h2 class="status">
-        {{ getServerRoundStatusBoard[serverRoundStatusCode].message }}
-      </h2>
+      <div class="game__info">
+        <h3 class="info__history-title">Roulette History</h3>
+        <div class="roulette-history">
+          <div
+            class="roulette-history__number"
+            :class="item.color"
+            v-for="item in sortNumberHistory"
+          >
+            {{ item.number }}
+          </div>
+        </div>
+        <h2 class="status">
+          {{ getServerRoundStatusBoard[serverRoundStatusCode].message }}
+        </h2>
+      </div>
     </div>
     <div class="board-container">
       <div
@@ -145,8 +157,12 @@ export default {
       this.spinPromise(data);
     });
 
-    this.socketInstance.on("confirmBet", (err) => {
+    this.socketInstance.on("confirmBet", () => {
       this.removeCredits();
+    });
+
+    this.socketInstance.on("rouletteHistory", (data) => {
+      this.$store.dispatch("updateNumberHistory", data);
     });
 
     this.socketInstance.on("connect_error", (err) => {
@@ -172,6 +188,22 @@ export default {
 
     getServerRoundStatusBoard() {
       return this.$store.getters.getServerRoundStatusBoard;
+    },
+
+    getNumberHistory() {
+      return this.$store.getters.getNumberHistory;
+    },
+
+    sortNumberHistory() {
+      let unsortedHistory = this.getNumberHistory;
+      console.log(unsortedHistory);
+      let roulettePallet = this.getRoulettePallet;
+      console.log(roulettePallet);
+      let sortedHistory = [...unsortedHistory].map((number) => {
+        return roulettePallet[number];
+      });
+      console.log(sortedHistory, "HISTORY!");
+      return sortedHistory.slice(sortedHistory.length - 13);
     },
   },
 
@@ -426,6 +458,46 @@ export default {
   padding: 1rem;
   background: var(--background2);
   border-radius: 1rem;
+}
+
+.game__info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 60%;
+  padding-top: 1rem;
+}
+
+.info__history-title {
+  color: var(--highlight);
+}
+
+.roulette-history {
+  display: grid;
+  grid-template-columns: repeat(13, 3rem);
+  grid-template-rows: 3rem;
+  gap: 0.3rem;
+  /* width: 100%; */
+  height: 100%;
+  background: #130a20;
+  border-radius: 2rem;
+  padding: 0.3rem 0.3rem;
+  align-items: center;
+}
+
+.roulette-history__number {
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  background: green;
+  border-radius: 2rem;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 0.3rem 0;
+  transition: 2s;
 }
 
 .status {
@@ -758,5 +830,17 @@ export default {
 
 .color-beted.g {
   background-color: #43a047;
+}
+
+.green {
+  background-color: #43a047;
+}
+
+.red {
+  background-color: #e53935;
+}
+
+.black {
+  background-color: #424242;
 }
 </style>

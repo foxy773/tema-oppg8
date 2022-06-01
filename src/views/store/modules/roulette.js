@@ -73,7 +73,7 @@ export default {
 		},
 
 		updateNumberHistory(state, data) {
-			state.numberHistory.push(data)
+			state.numberHistory = data
 		}
 	},
 
@@ -81,8 +81,9 @@ export default {
 		updateCurrentNum({ commit }, data) {
 			commit("updateCurrentNum", data)
 		},
+
 		updateNumberHistory({ commit }, data) {
-			commit("updateCurrentNum", data)
+			commit("updateNumberHistory", data)
 		}
 	},
 
@@ -99,7 +100,7 @@ export default {
 			return state.serverRoundStatusBoard
 		},
 
-		getnumberHistory(state) {
+		getNumberHistory(state) {
 			return state.numberHistory
 		}
 	}

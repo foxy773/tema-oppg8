@@ -43,6 +43,8 @@ io.on('connection', function (socket) {
 
 }) */
 
+let rouletteHistory = []
+
 const schedule = require('node-schedule');
 
 //Functions
@@ -56,17 +58,21 @@ let gameTimer
 let ticker
 
 function checkServer() {
-	if (serverStatusCode === 0) {
+	if (serverStatusCode === 0) {					//Wait for new round
 		console.log("[Wait for new round!]");
 		io.in("roulette").emit("waitNewRound")
-	} else if (serverStatusCode === 1) {
+		io.in("roulette").emit("rouletteHistory", rouletteHistory)
+
+	} else if (serverStatusCode === 1) {		//Open Bets
 		console.log("[Bets Open!]");
 		io.in("roulette").emit("openBets")
-	} else if (serverStatusCode === 2) {
+
+	} else if (serverStatusCode === 2) {		//Close Bets
 		console.log("[Bets Closed!]");
 		io.in("roulette").emit("closeBets")
 		io.in("roulette").emit("confirmBet")
-	} else if (serverStatusCode === 3) {
+
+	} else if (serverStatusCode === 3) {		//Spinning
 		console.log("[Spinning!]");
 		startGame()
 		gameTimer.reschedule(gameTimerJob)
@@ -79,6 +85,7 @@ function startGame() {
 	const min = 0
 	const newNumber = Math.floor(Math.random() * (max - min)) + min;
 	io.in("roulette").emit("startGame", newNumber)
+	rouletteHistory.push(newNumber)
 	gameTimer = schedule.scheduleJob(gameTimerJob, function () {
 		console.log("GAME TIMER RE")
 		gameTimer.cancel()
