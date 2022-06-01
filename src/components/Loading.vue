@@ -1,7 +1,7 @@
 <template>
   <div class="loading-back">
 	  <h1>Torsk Tipping</h1>
-	  <img class="loading-back__fish fish-animation" src="images/Torsk-tipping.svg" alt="">
+	  <img class="loading-back__fish fish-animation" src="/images/Torsk-tipping.svg" alt="">
 	  <div class="bouncing-text">
   <p class="l">L</p>
   <p class="o">O</p>
