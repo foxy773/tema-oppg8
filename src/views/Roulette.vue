@@ -15,7 +15,7 @@
         <div class="roulette-history">
           <div
             class="roulette-history__number"
-            :class="item.color"
+            :class="item.color, {'slide-in-animation': this.serverRoundStatusCode === 0}"
             v-for="item in sortNumberHistory"
           >
             {{ item.number }}
@@ -130,6 +130,7 @@ export default {
       currentWinNumber: null,
       chipSelected: 1,
       roundBets: [],
+      betsHistory: [],
       betSum: 0,
       serverRoundStatusCode: 0,
       displayWinnings: false,
@@ -137,7 +138,7 @@ export default {
   },
 
   created() {
-    this.socketInstance = io("http://localhost:5000");
+    this.socketInstance = io("https://secret-sands-34117.herokuapp.com/");
 
     this.socketInstance.on("waitNewRound", () => {
       this.serverRoundStatusCode = 0;
@@ -203,7 +204,7 @@ export default {
         return roulettePallet[number];
       });
       console.log(sortedHistory, "HISTORY!");
-      return sortedHistory.slice(sortedHistory.length - 13);
+      return sortedHistory.reverse().slice(0, 13);
     },
   },
 
@@ -244,6 +245,11 @@ export default {
       return test;
     },
 
+    reBet() {
+      this.roundBets = this.betsHistory
+      this.checkTotalBets();
+    },
+
     addBet(item) {
       this.totalBets();
       const userCredits = this.getUserInfo.credits;
@@ -259,6 +265,7 @@ export default {
         const bettedCredits = { bet: chipSelected };
         let chosenNumber = Object.assign({ ...item }, bettedCredits);
         roundBets.push(chosenNumber);
+        this.betsHistory = roundBets
         chosenNumber = {};
         this.playSound("chipsOnBoardSound");
       } else {
@@ -272,7 +279,6 @@ export default {
         this.betSum = 0;
         this.roundBets = [];
         /* this.checkTableChips() */
-        this.sortRoundBets();
         this.playSound("chipsReset");
       }
     },
@@ -437,7 +443,7 @@ export default {
 <style scoped>
 .game-container {
   width: 100%;
-  height: 100%;
+  height: 120%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -483,6 +489,7 @@ export default {
   border-radius: 2rem;
   padding: 0.3rem 0.3rem;
   align-items: center;
+  overflow: hidden;
 }
 
 .roulette-history__number {
@@ -497,7 +504,6 @@ export default {
   align-items: center;
   color: white;
   padding: 0.3rem 0;
-  transition: 2s;
 }
 
 .status {
@@ -525,8 +531,8 @@ export default {
   grid-template-rows: repeat(3, 4rem);
   gap: 0.3rem;
   grid-auto-flow: column;
-  transition: all 2s ease-in-out;
-  -webkit-transition: all 2s ease-in-out;
+  transition: all 1.5s ease-in-out;
+  -webkit-transition: all 1.5s ease-in-out;
   /*   opacity: 1; */
 }
 
@@ -578,15 +584,15 @@ export default {
   cursor: pointer;
 }
 
-.betNum:nth-child(even) {
+.betNum {
   background-color: #424242;
 }
 
-.betNum:nth-child(odd) {
+.nr1, .nr3, .nr5, .nr7, .nr9, .nr12, .nr14, .nr16, .nr18, .nr19, .nr21, .nr23, .nr25, .nr27, .nr28, .nr30, .nr32, .nr34, .nr36 {
   background-color: #e53935;
 }
 
-.betNum:nth-child(1) {
+.nr0 {
   background-color: #43a047;
   grid-row: 1 / span 3;
 }
@@ -814,7 +820,6 @@ export default {
 
 .roulette-result {
   display: inline-block;
-
   position: absolute;
   padding: 20px;
   /* padding: 0 20px; */
@@ -842,5 +847,21 @@ export default {
 
 .black {
   background-color: #424242;
+}
+
+.slide-in-animation {
+   -webkit-animation: slide-right 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: slide-right 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+@keyframes slide-right {
+  0% {
+    -webkit-transform: translateX(-3rem);
+            transform: translateX(-3rem);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
 }
 </style>

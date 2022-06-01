@@ -1,6 +1,6 @@
 <template>
   <div class="win-container">
-    <h1 class="win-container__title">YOU WON!</h1>
+    <h2 class="win-container__title">YOU WON!</h2>
 <!--     <h2 class="win-container__name">Felix</h2> -->
     <h3 class="win-container__amount">{{winningNumber.amount.toLocaleString("no-NO")}} Credits</h3>
 	 <h4>On Number</h4>

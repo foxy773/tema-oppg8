@@ -3,12 +3,12 @@
 		<h2>Våre spill</h2>
 		<ul class="games-container__game-list">
 			<li class="game-list__game">
-				<p class="game__name">LOTTO</p>
-				<img class="game__image" src="/images/Lotto-thumb2.png" alt="">
+				<p class="game__name">LIVE ROULETTE</p>
+				<img class="game__image" src="/images/Lotto-thumb2Roulette.png" alt="">
 			</li>
 			<li class="game-list__game">
-				<p class="game__name">ROULETTE</p>
-				<img class="game__image" src="/images/Lotto-thumb2Roulette.png" alt="">
+				<p class="game__name">LOTTO</p>
+				<img class="game__image" src="/images/Lotto-thumb2.png" alt="">
 			</li>
 			<li class="game-list__game">
 				<p class="game__name">BLACKJACK</p>
@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import { onMounted } from '@vue/runtime-core'
 export default {
 	data() {
 		return {

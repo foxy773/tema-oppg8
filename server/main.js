@@ -9,15 +9,17 @@ const io = new Server(server, {
 		methods: ["GET", "POST"]
 	}
 });
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5001
 
 app.get("/", (req, res) => {
 	console.log("you hit me good darling")
 })
+let rouletteHistory = []
 
 io.on("connection", (socket) => {
 	console.log("gambler connected")
 	socket.join("roulette");
+	io.in("roulette").emit("rouletteHistory", rouletteHistory)
 
 
 	socket.on('disconnect', () => {
@@ -42,8 +44,6 @@ io.on('connection', function (socket) {
   }
 
 }) */
-
-let rouletteHistory = []
 
 const schedule = require('node-schedule');
 
