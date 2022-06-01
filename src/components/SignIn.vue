@@ -2,7 +2,7 @@
 	<div @click="signInVisible" class="background">
 		<div class="background__login-container">
 			<div class="login-container__logo-container">
-				<img src="images/Norsk-tipping-logo-trans2.png" alt="">
+				<img src="/images/Norsk-tipping-logo-trans2.png" alt="">
 			</div>
 			<div class="login-container__info">
 				<h1>Logg Inn</h1>
