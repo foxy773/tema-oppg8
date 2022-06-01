@@ -31,7 +31,7 @@
             <div class="resources__credits">
                 <p class="credits__text">Saldo</p>
                 <div class="credits__display">
-                    <img class="display__icon" src="images/gambling-chips.png" alt="" />
+                    <img class="display__icon" src="/images/gambling-chips.png" alt="" />
                     <p class="display__amount">
                         {{ getUserInfo.credits.toLocaleString("no-NO") }}
                     </p>
@@ -41,7 +41,7 @@
             <div class="resources__level">
                 <p class="level__text">Level</p>
                 <div class="level__display">
-                    <img class="display__icon" src="images/level-up.png" alt="" />
+                    <img class="display__icon" src="/images/level-up.png" alt="" />
                     <p class="display__amount">0</p>
                 </div>
             </div>
@@ -198,7 +198,7 @@ export default {
     height: inherit;
     z-index: 2;
     border-radius: 50%;
-    background-image: url("images/upload.png");
+    background-image: url("/images/upload.png");
     background-size: 4rem;
     background-repeat: no-repeat;
     background-position: center;

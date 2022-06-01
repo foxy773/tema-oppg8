@@ -608,7 +608,7 @@ export default {
   width: 100%;
   border-radius: 50%;
   aspect-ratio: 1/1;
-  background-image: url(/images/chips-background.svg);
+  background-image: url("/images/chips-background.svg");
   box-shadow: rgb(145, 112, 0) 0px 0.2em 0px 0px;
   background-color: var(--highlight);
 }
