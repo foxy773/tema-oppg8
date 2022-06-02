@@ -11,7 +11,7 @@ const io = new Server(server, {
 });
 const PORT = process.env.PORT || 5001
 
-/* app.get("/api/foo", (req, res) => {
+/* app.get("/api/roulette", (req, res) => {
 	console.log("you hit me good darling")
 }) */
 let rouletteHistory = []

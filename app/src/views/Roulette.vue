@@ -138,7 +138,7 @@ export default {
   },
 
   created() {
-    this.socketInstance = io("https://secret-sands-34117.herokuapp.com/");
+    this.socketInstance = io("/api/roulette");
 
     this.socketInstance.on("waitNewRound", () => {
       this.serverRoundStatusCode = 0;
