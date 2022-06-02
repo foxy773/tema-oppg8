@@ -73,7 +73,7 @@
           }"
         >
           Undo
-          <img class="undo__icon" src="/app/public/images/undo.png" alt="" />
+          <img class="undo__icon" src="/images/undo.png" alt="" />
         </button>
         <button
           @click="reBet()"
@@ -85,7 +85,7 @@
                 this.serverRoundStatusCode <= 4),
           }"
         >
-          Rebet<img class="reset__icon" src="/app/public/images/reset.png" alt="" />
+          Rebet<img class="reset__icon" src="/images/reset.png" alt="" />
         </button>
       </div>
     </div>
@@ -608,7 +608,7 @@ export default {
   width: 100%;
   border-radius: 50%;
   aspect-ratio: 1/1;
-  background-image: url("/app/public/images/chips-background.svg");
+  background-image: url("/images/chips-background.svg");
   box-shadow: rgb(145, 112, 0) 0px 0.2em 0px 0px;
   background-color: var(--highlight);
 }
@@ -679,7 +679,7 @@ export default {
   aspect-ratio: 1/1;
   background-color: var(--highlight);
   border-radius: 50%;
-  background-image: url(/app/public/images/chips-background.svg);
+  background-image: url(/images/chips-background.svg);
   box-shadow: rgb(145, 112, 0) 0px 0.2em 0px 0px;
   margin: 0 0.5rem;
   color: black;
@@ -694,7 +694,7 @@ export default {
   aspect-ratio: 1/1;
   background-color: var(--highlight);
   border-radius: 50%;
-  background-image: url(/app/public/images/chips-background.svg);
+  background-image: url(/images/chips-background.svg);
   box-shadow: rgb(145, 112, 0) 0px 0.2em 0px 0px,
     rgb(255, 255, 255) 0px 0.1em 0px 0.2em;
   margin: 0 0.5rem;

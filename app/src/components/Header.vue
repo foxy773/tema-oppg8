@@ -4,7 +4,7 @@
       <router-link :to="{ name: 'home' }"
         ><img
           class="content__logo"
-          src="/app/public/images/Norsk-tipping-logo-trans2.png"
+          src="/images/Norsk-tipping-logo-trans2.png"
           alt="Torsk Tipping logo"
       /></router-link>
       <!-- <ProfileHeader /> -->

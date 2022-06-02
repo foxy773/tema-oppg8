@@ -4,15 +4,15 @@
 		<ul class="games-container__game-list">
 			<li class="game-list__game">
 				<p class="game__name">LIVE ROULETTE</p>
-				<img class="game__image" src="/app/public/images/Lotto-thumb2Roulette.png" alt="">
+				<img class="game__image" src="/images/Lotto-thumb2Roulette.png" alt="">
 			</li>
 			<li class="game-list__game">
 				<p class="game__name">LOTTO</p>
-				<img class="game__image" src="/app/public/images/Lotto-thumb2.png" alt="">
+				<img class="game__image" src="/images/Lotto-thumb2.png" alt="">
 			</li>
 			<li class="game-list__game">
 				<p class="game__name">BLACKJACK</p>
-				<img class="game__image" src="/app/public/images/Lotto-thumb2Blackjack.png" alt="">
+				<img class="game__image" src="/images/Lotto-thumb2Blackjack.png" alt="">
 			</li>
 		</ul>
 	</div>

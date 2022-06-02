@@ -1,14 +1,14 @@
 <template>
     <div class="profile" v-if="getUserInfo">
         <div class="profile__img-container">
-            <img class="img-container__image" :src="getUserInfo.image || '/app/public/images/default-profile.png'" alt="" />
+            <img class="img-container__image" :src="getUserInfo.image || '/images/default-profile.png'" alt="" />
 
             <input @change="this.onProfileImgChange($event)" class="img-container__input" type="file" accept=".jpg, .jpeg, .png" />
             <div class="img-container__icon" src="" alt=""></div>
         </div>
         <div class="profile__role-container" @click="this.sendToAdminpanel()" v-if="this.getUserInfo.admin">
             <h3>Admin</h3>
-            <img class="role-container__badge" src="/app/public/images/admin.png" alt="" />
+            <img class="role-container__badge" src="/images/admin.png" alt="" />
         </div>
         <div class="profile__info">
             <div class="info__username">
@@ -31,7 +31,7 @@
             <div class="resources__credits">
                 <p class="credits__text">Saldo</p>
                 <div class="credits__display">
-                    <img class="display__icon" src="/app/public/images/gambling-chips.png" alt="" />
+                    <img class="display__icon" src="/images/gambling-chips.png" alt="" />
                     <p class="display__amount">
                         {{ getUserInfo.credits.toLocaleString("no-NO") }}
                     </p>
@@ -41,7 +41,7 @@
             <div class="resources__level">
                 <p class="level__text">Level</p>
                 <div class="level__display">
-                    <img class="display__icon" src="/app/public/images/level-up.png" alt="" />
+                    <img class="display__icon" src="/images/level-up.png" alt="" />
                     <p class="display__amount">0</p>
                 </div>
             </div>
@@ -198,7 +198,7 @@ export default {
     height: inherit;
     z-index: 2;
     border-radius: 50%;
-    background-image: url("/app/public/images/upload.png");
+    background-image: url("/images/upload.png");
     background-size: 4rem;
     background-repeat: no-repeat;
     background-position: center;
@@ -269,7 +269,7 @@ export default {
     min-width: 2.2rem;
     max-width: 2.2rem;
     max-height: 2.2rem;
-    background-image: url("/app/public/images/edit-text.png");
+    background-image: url("/images/edit-text.png");
     background-size: 100% 100%;
     background-color: transparent;
     border: 0;

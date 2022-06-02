@@ -1,6 +1,6 @@
 <template>
   <div class="profile-header" v-if="getUserInfo">
-	  <img class="profile-header__image" @click="goToProfile" :src="getUserInfo.image || '/app/public/images/default-profile.png'" alt="">
+	  <img class="profile-header__image" @click="goToProfile" :src="getUserInfo.image || '/images/default-profile.png'" alt="">
 	  <div class="profile-header__info">
 		  <p class="info__username">{{ getUserInfo.username }}</p>
 		<p class="info__credits">{{ getUserInfo.credits.toLocaleString("no-NO") }}</p>
