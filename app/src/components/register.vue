@@ -8,7 +8,7 @@
     <div @click="registerVisible" class="background">
 		<div class="background__register-container">
 			<div class="register-container__logo-container">
-				<img src="/images/Norsk-tipping-logo-trans2.png" alt="">
+				<img src="/app/public/images/Norsk-tipping-logo-trans2.png" alt="">
 			</div>
 			<div class="register-container__info">
 				<h1>Opprett Konto</h1>

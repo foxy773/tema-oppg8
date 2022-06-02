@@ -11,7 +11,7 @@
           <li class="list__item">
               <button @click="signOutUser" class="item__button">
                   <p class="button__text">Logg ut</p>
-                  <img class="button__img" src="/images/right-arrow.png" alt="">
+                  <img class="button__img" src="/app/public/images/right-arrow.png" alt="">
             </button>
           </li>
       </ul>
