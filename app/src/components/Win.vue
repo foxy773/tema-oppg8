@@ -44,6 +44,7 @@ export default {
 }
 
 .win-container__title {
+  text-align: center;
   padding: 0 2rem;
 }
 
