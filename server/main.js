@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors')
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
@@ -10,6 +11,8 @@ const io = new Server(server, {
 	}
 });
 const PORT = process.env.PORT || 5001
+
+app.use(cors({origin:true}))
 
 app.get("/api/roulette", (req, res) => {
 	console.log("you hit me good darling")
