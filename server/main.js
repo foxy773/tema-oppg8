@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 5001
 
 app.get("/api/roulette", (req, res) => {
 	console.log("you hit me good darling")
+	res.send("You hit me good")
 })
 
 let rouletteHistory = []
