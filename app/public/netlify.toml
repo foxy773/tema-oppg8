@@ -1,8 +1,8 @@
-""" [[redirects]]
+[[redirects]]
   from = "/api/*"
   to = "https://secret-sands-34117.herokuapp.com/"
   status = 200
-  force = true """
+  force = true
 
 [[redirects]]
   from = "/*"
