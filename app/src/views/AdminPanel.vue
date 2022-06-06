@@ -1,7 +1,7 @@
 <template>
-  <ul class="userlist-container">
-    <li v-for="user in updateAllUsers" class="userlist-container__user">
-      Username: {{ user.username }}
+  <ul class="userlist-container" v-if="getUserInfo.admin">
+    <li v-for="user in updateAllUsers" class="userlist-container__user">    <!--Welcome too my admin panel that has barily been-->
+      Username: {{ user.username }}                                         <!--barely touched-->
       <button @click="giveUserCredits(user)">Give Credits</button>
       <button @click="removeUserCredits(user)">Remove Credits</button>
       <button @click="deleteUser(user)">Delete User</button>
@@ -27,7 +27,7 @@ export default {
 
   computed: {
     updateAllUsers() {
-      return this.$store.getters.getAllUsers;
+      return this.$store.getters.getAllUsers;           
     },
 
     getUserInfo() {
@@ -36,20 +36,16 @@ export default {
 
     getUserLoggedIn() {
       return this.$store.getters.getUserLoggedIn;
-    },
-
-     getUserAdmin() {    
-      return this.$store.getters.getAllUserData;
-    },
+    }
   },
 
   methods: {
-    async checkIfUserAdmin() {
-      let userLoggedIn = await this.getUserLoggedIn;
+    async checkIfUserAdmin() {                          // Checks if user is logged in, and then if the user contains the role as
+      let userLoggedIn = await this.getUserLoggedIn;    // an admin. Sends the user back to the "home" page before anything loads
       console.log(userLoggedIn, "CheckIfLoggedIn");
 
       if (userLoggedIn) {
-        let userAdmin = this.getUserAdmin;
+        let userAdmin = this.getUserInfo.admin;
         console.log(userAdmin, "CheckIfAdmin");
         if (userAdmin) {
           console.log("Admin!");
@@ -62,16 +58,16 @@ export default {
       }
     },
 
-    async getAllUsersFromSanity() {
-      const query = queryAllUsers;
+    async getAllUsersFromSanity() {                               // Fetches all users from Sanity and send it to the store for
+      const query = queryAllUsers;                                // Admins.
 
       const sanityData = await sanity.fetch(query);
       console.log(sanityData);
       this.$store.dispatch("updateAllUsers", sanityData);
     },
 
-    async giveUserCredits(user) {
-      const chosenCredits = parseFloat(
+    async giveUserCredits(user) {                                                   // Gives users the chosen amount by an alert
+      const chosenCredits = parseFloat(                                             // and an UID.
         prompt(`How many credits do you want too give to ${user.username} ?`, 0)
       );
       if (
@@ -97,7 +93,7 @@ export default {
       }
     },
 
-    async removeUserCredits(user) {
+    async removeUserCredits(user) {                                                   //Same as above, just removes credits.
       const chosenCredits = parseFloat(
         prompt(
           `How many credits do you want too remove from ${user.username} ?`,
@@ -128,8 +124,8 @@ export default {
       }
     },
 
-    async deleteUser(user) {
-      if (
+    async deleteUser(user) {                                                  // Just switches an boolean in sanity to "delete" an user
+      if (                                                                    // This was never finished
         confirm(
           `Click OK to delete ${user.username} (THIS CAN NOT BE UNDONE!!!)`
         )
