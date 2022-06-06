@@ -2,10 +2,10 @@
 	<div class="games-container">
 		<h2>Våre spill</h2>
 		<ul class="games-container__game-list">
-			<li class="game-list__game">
+			<router-link :to="{name: 'roulette'}"><li class="game-list__game">
 				<p class="game__name">LIVE ROULETTE</p>
 				<img class="game__image" src="/images/Lotto-thumb2Roulette.png" alt="">
-			</li>
+			</li></router-link>
 			<li class="game-list__game">
 				<p class="game__name">LOTTO</p>
 				<img class="game__image" src="/images/Lotto-thumb2.png" alt="">
