@@ -1,9 +1,8 @@
 <template>
   <div class="win-container">
     <h2 class="win-container__title">YOU WON!</h2>
-<!--     <h2 class="win-container__name">Felix</h2> -->
-    <h3 class="win-container__amount">{{winningNumber.amount.toLocaleString("no-NO")}} Credits</h3>
-	 <h4>On Number</h4>
+    <h3 class="win-container__amount">{{winningNumber.amount.toLocaleString("no-NO")}} Credits</h3> <!-- All the info that comes with the -->
+	 <h4>On Number</h4>                                                                               <!-- Prop from Roulette.vue -->
     <div class="win-container__win-number" :class="winningNumber.color">
       <p class="win-number__number">{{ winningNumber.number }}</p>
     </div>
@@ -21,7 +20,7 @@ export default {
   data() {},
 
   mounted() {
-    confetti();
+    confetti();     // A function from a library that shoots confetti. YAY! https://github.com/catdad/canvas-confetti.
   },
 
   methods: {},
@@ -56,8 +55,8 @@ export default {
   align-items: center;
   justify-content: center;
   color: white;
-      font-family: jubel;
-    font-size: 1.5rem;
+  font-family: jubel;
+  font-size: 1.5rem;
   }
 
   .green {

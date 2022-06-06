@@ -77,8 +77,8 @@ export default {
   },
 
   methods: {
-    onProfileImgChange(event) {
-      console.log(event.target.files);
+    onProfileImgChange(event) {                       // Changes profilepicture from an input, converts it to a Base64 image
+      console.log(event.target.files);                // and stores it in Sanity
       const reader = new FileReader();
       reader.addEventListener("load", () => {
         const uploaded_image = reader.result;
@@ -92,7 +92,7 @@ export default {
       reader.readAsDataURL(event.target.files[0]);
     },
 
-    async updateSanityUserImage(image) {
+    async updateSanityUserImage(image) {                          // Sends the base64 image too Sanity
       const currentUser = this.getUserInfo;
       try {
         await sanity
@@ -107,7 +107,7 @@ export default {
       }
     },
 
-    async updateSanityUsername(profileUsername) {
+    async updateSanityUsername(profileUsername) {                 // Updates the Sanity Username from an input
       this.username = this.getUserInfo.username;
       if (
         !this.changeUsername &&
@@ -136,7 +136,7 @@ export default {
       }
     },
 
-    usernameChange() {
+    usernameChange() { 
       this.changeUsername = !this.changeUsername;
     },
 

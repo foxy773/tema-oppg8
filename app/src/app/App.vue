@@ -45,9 +45,8 @@ export default {
   },
 
   methods: {
-    async getUserFromSanity(user) {
+    async getUserFromSanity(user) {                                       // Gets the user from sanity based on firebase UID
       const currentUser = user;
-      console.log(currentUser, "test");
       const query = `*[_type == 'users' && uid == "${currentUser.uid}"] {
                         uid,
                         username,
@@ -62,13 +61,11 @@ export default {
 
       console.log(query);
       const sanityData = await sanity.fetch(query);
-      console.log(sanityData);
       this.$store.dispatch("updateUserData", sanityData[0]);
     },
 
-    async onUserSignedIn() {
-      const auth = getAuth();
-      console.log(auth, "AAAAAAAU");
+    async onUserSignedIn() {                                          // Switches a boolean in vuex if user is signed in by checking
+      const auth = getAuth();                                         // With Firebase's getAuth() function
       onAuthStateChanged(auth, (user) => {
         if (user) {
           console.log("User Logged In!");

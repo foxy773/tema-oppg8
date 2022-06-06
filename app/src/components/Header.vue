@@ -19,8 +19,6 @@ import Navbar from "./Navbar.vue";
 import ProfileHeader from "./ProfileHeader.vue";
 import UserNavbar from "./UserNavbar.vue";
 
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-
 export default {
   data() {
     return {
@@ -38,15 +36,7 @@ export default {
     getUserLoggedIn() {
         return this.$store.getters.getUserLoggedIn
     }
-  },
-
-  methods: {
-        
-    },
-
-    mounted() {
-        /* this.onUserSignedIn() */
-    }
+  }
 
 };
 </script>

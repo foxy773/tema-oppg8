@@ -44,16 +44,17 @@ export default {
         },
 
         signInVisible(e) {
-			  const background = document.querySelector(".background").className
-			  if(e.target.className === background) {
-            this.$store.dispatch("switchSignInVisible")
+			  const background = document.querySelector(".background").className		//	A background behind the component Switches a	
+			  if(e.target.className === background) {											// boolean in store too hide the login
+            this.$store.dispatch("switchSignInVisible")									//	component if clicked
 				}
         },
 
-		  async signInUser() {
-			  try {
-					const auth = getAuth()
-			  		const user = await signInWithEmailAndPassword(auth, this.loginData.email, this.loginData.password)
+		  async signInUser() {																		// Asks Firebase if the user exists and validates, 
+			  try {																						//	password and emal. Then sends too profile
+					const auth = getAuth()															// if it does.
+			  		const user = await signInWithEmailAndPassword
+					  (auth, this.loginData.email, this.loginData.password)
 			  		console.log("User logged in!", user)
 			  		this.$store.dispatch("switchSignInVisible")
 			  		this.$router.push({name: 'profile'})

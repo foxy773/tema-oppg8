@@ -7,8 +7,8 @@
   <p class="o">O</p>
   <p class="a">A</p>
   <p class="d">D</p>
-  <p class="i">I</p>
-  <p class="n">N</p>
+  <p class="i">I</p>      <!--Got most of the code from here: https://codepen.io/lenasta92579651/pen/PopGVMG-->
+  <p class="n">N</p>      <!--And changed it to my liking and use.-->
   <p class="g">G</p>
   <p class="dot1">.</p>
   <p class="dot2">.</p>

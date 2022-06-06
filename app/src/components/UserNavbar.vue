@@ -3,10 +3,6 @@
       <ul class="navBar__list">
           <li class="list__item">
 				 <ProfileHeader />
-              <!-- <button @click="goToProfile" class="item__button">
-                  <img src="" alt="">
-                  <p class="button__text">Min profil</p>
-            </button> -->
           </li>
           <li class="list__item">
               <button @click="signOutUser" class="item__button">
@@ -38,7 +34,7 @@ export default {
 
 	methods: {
 		signOutUser() {
-			const auth = getAuth();
+			const auth = getAuth();										// Signs out the user using firebases simple logout function
 			signOut(auth).then(() => {
 				console.log(auth)
 				this.$store.dispatch("updateUserData", null)

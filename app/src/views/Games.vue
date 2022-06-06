@@ -1,5 +1,5 @@
 <template>
-<div class="games-container">
+<div class="games-container">																<!--This is a page that was not finished-->
 	<h1 class="games-container__headline">Spill</h1>
   <ul class="games-container__game-list" v-if="getUserInfo && getGames" >
     <li class="game-list__game" v-for="game in getGames" v-bind:style="{ backgroundImage: 'url(' + game.thumbnail.image + ')' }">
@@ -38,7 +38,7 @@ export default {
   },
 
   methods: {
-	  async checkIfUserLoggedIn() {
+	  async checkIfUserLoggedIn() {											//Checks if users are logged in
       let userLoggedIn = await this.getUserLoggedIn;
       console.log(userLoggedIn, "CHECKIFUSER");
       if (userLoggedIn) {
@@ -48,7 +48,7 @@ export default {
       }
     },
 
-	 async getGamesFromSanity() {
+	 async getGamesFromSanity() {												// Fetches all games from sanity
       const query = queryAllGames;
 
       console.log(query);

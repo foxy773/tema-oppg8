@@ -1,6 +1,6 @@
 <template>
   <div class="game-container">
-    <Win :winningNumber="currentWinNumber" v-if="this.displayWinnings" />
+    <Win :winningNumber="currentWinNumber" v-if="this.displayWinnings" />   <!--Winning module that is displayed if user won on bet-->
     <h1 class="game-container__title">Live Roulette</h1>
     <div class="game">
       <div class="roulette">
@@ -38,8 +38,8 @@
         }"
       >
         <button
-          @click="addBet(item)"
-          :class="`betNum nr${index}`"
+          @click="addBet(item)"                              
+          :class="`betNum nr${index}`"                           
           v-for="(item, index) in this.sortedRoulettePallet()"
         >
           <div
@@ -138,36 +138,36 @@ export default {
   },
 
   created() {
-    this.socketInstance = io("https://secret-sands-34117.herokuapp.com/")
+    this.socketInstance = io("https://secret-sands-34117.herokuapp.com/") // This.socketInstace is where the client recives all the emits from the server
     /* this.socketInstance = io("/api/roulette"); */
 
-    this.socketInstance.on("waitNewRound", () => {
+    this.socketInstance.on("waitNewRound", () => {  // Tells the client to "wait for new round"
       this.serverRoundStatusCode = 0;
     });
 
-    this.socketInstance.on("openBets", () => {
+    this.socketInstance.on("openBets", () => {      // Tells the client that bets are open and you can now place bets
       this.serverRoundStatusCode = 1;
       this.undoBet(true);
     });
 
-    this.socketInstance.on("closeBets", () => {
+    this.socketInstance.on("closeBets", () => {     // Tells the client that bets are closed and you can no longer place bets
       this.serverRoundStatusCode = 2;
     });
 
-    this.socketInstance.on("startGame", (data) => {
+    this.socketInstance.on("startGame", (data) => {   // Tells the client to spinn the "wheel" with a random number from 0 to 36
       this.serverRoundStatusCode = 3;
       this.spinPromise(data);
     });
 
-    this.socketInstance.on("confirmBet", () => {
+    this.socketInstance.on("confirmBet", () => {      // Tells the client to decrease an amount from the player in the database
       this.removeCredits();
     });
 
-    this.socketInstance.on("rouletteHistory", (data) => {
-      this.$store.dispatch("updateNumberHistory", data);
+    this.socketInstance.on("rouletteHistory", (data) => {   // Gives the client the array of randoms numbers chosen while the server
+      this.$store.dispatch("updateNumberHistory", data);    // was on
     });
 
-    this.socketInstance.on("connect_error", (err) => {
+    this.socketInstance.on("connect_error", (err) => {      // If server can not be connected
       console.log(`connect_error due to ${err.message}`);
       this.serverRoundStatusCode = 4;
     });
@@ -196,21 +196,19 @@ export default {
       return this.$store.getters.getNumberHistory;
     },
 
-    sortNumberHistory() {
-      let unsortedHistory = this.getNumberHistory;
-      console.log(unsortedHistory);
-      let roulettePallet = this.getRoulettePallet;
-      console.log(roulettePallet);
+    sortNumberHistory() {                                       // Takes all the random numbers from server, places them in a new array
+      let unsortedHistory = this.getNumberHistory;              // based on the roulettePallet in store and returns a new array where
+      let roulettePallet = this.getRoulettePallet;              // the random numbers from the server amounts to a number and color
       let sortedHistory = [...unsortedHistory].map((number) => {
         return roulettePallet[number];
       });
-      console.log(sortedHistory, "HISTORY!");
-      return sortedHistory.reverse().slice(0, 13);
+
+      return sortedHistory.reverse().slice(0, 13);      // Reverses the array and only keeps the last 14 numbers
     },
   },
 
   methods: {
-    playSound(audio) {
+    playSound(audio) {                                  // Plays sounds based on method call strings
       const chipsOnBoardSound = "/sounds/chips-bet.mp3";
       const chipsReset = "/sounds/chips-reset.mp3";
       const winningSound = "/sounds/winning2.wav";
@@ -227,9 +225,9 @@ export default {
       audio.play("");
     },
 
-    sortRoundBets() {
-      const roundBets = this.roundBets;
-      const sortedRoundBets = Object.values(
+    sortRoundBets() {                                               // Takes all objects that have the same number and reduces them
+      const roundBets = this.roundBets;                             // so all object with numbers are unique and adds the bets from
+      const sortedRoundBets = Object.values(                        // previously same number to one.
         roundBets.reduce(
           (acc, { number, bet }) => (
             ((acc[number] = acc[number] || { number, bet: 0 }).bet += bet), acc
@@ -240,26 +238,26 @@ export default {
       return sortedRoundBets;
     },
 
-    checkTableChips(item) {
-      const roundsBets = this.sortRoundBets();
+    checkTableChips(item) {                                         // Checks if number was bet on, and if it was it is bound to a chip
+      const roundsBets = this.sortRoundBets();                      // with the bet value
       let test = roundsBets.find((e) => e.number === item.number);
       return test;
     },
 
-    reBet() {
-      this.roundBets = this.betsHistory
-      this.checkTotalBets();
+    reBet() {                                                     // Bets on all numbers with same bet from previous bet
+      this.roundBets = this.betsHistory                             
+      this.checkTotalBets();     // Checks if the bet exceeds the amount the user "has on hand".
     },
 
-    addBet(item) {
-      this.totalBets();
+    addBet(item) {                                                // Takes the number from the button on the roulette table
+      this.totalBets();                                           // and adds the total bet and amount on each number
       const userCredits = this.getUserInfo.credits;
       const chipSelected = this.chipSelected;
       const totalBets = this.betSum;
       const roundBets = this.roundBets;
 
       if (
-        userCredits >= chipSelected &&
+        userCredits >= chipSelected &&                            
         userCredits >= totalBets + chipSelected &&
         this.serverRoundStatusCode === 1
       ) {
@@ -275,17 +273,16 @@ export default {
       this.checkTotalBets();
     },
 
-    undoBet(valid) {
+    undoBet(valid) {                            // Undoes all bets if bets are still open
       if (valid && this.betSum > 0) {
         this.betSum = 0;
         this.roundBets = [];
-        /* this.checkTableChips() */
         this.playSound("chipsReset");
       }
     },
 
-    checkIfWon(winningNumber) {
-      let wonOnNumber = false;
+    checkIfWon(winningNumber) {                           // Checks if the user has won by taking the random number from the spin-
+      let wonOnNumber = false;                            //promise() and comparing it too the betHistory
       if (this.betSum > 0) {
         console.log(winningNumber, "winningNumber");
         const allBets = this.sortRoundBets();
@@ -294,23 +291,23 @@ export default {
       if (wonOnNumber === false || wonOnNumber === undefined) {
         console.log("No winnings");
       } else {
-        this.calulateWinnings(wonOnNumber, winningNumber.color);
-        console.log("WON!");
+        this.calulateWinnings(wonOnNumber, winningNumber.color);          // Sends the number and the color the player has won on
+        console.log("WON!");                                              // Too calculate the winnings
       }
     },
 
-    calulateWinnings(wonOnNumber, winColor) {
-      let bet = wonOnNumber.bet;
+    calulateWinnings(wonOnNumber, winColor) {                             // Calculates the winnings by simply multiplying the bet
+      let bet = wonOnNumber.bet;                                          // coresponding too standard european roulette odds
       let wonAmount = bet * 35 + bet;
       if (wonAmount > 0) {
-        this.giveCredits(wonAmount);
-        this.displayWinningScreen(wonOnNumber, wonAmount, winColor);
+        this.giveCredits(wonAmount);                                      // Sends the won amount too be sendt to the user
+        this.displayWinningScreen(wonOnNumber, wonAmount, winColor);      // Sends the won number, amount and color to the winScreen
         console.log(wonAmount, "Won amount");
       }
     },
 
-    displayWinningScreen(wonOnNumber, wonAmount, winColor) {
-      let amountObject = { amount: wonAmount };
+    displayWinningScreen(wonOnNumber, wonAmount, winColor) {              // Sends the winning number, color, and amount too 
+      let amountObject = { amount: wonAmount };                           // the winning screen in an prop
       let winningColor = { color: winColor };
       let winNumber = Object.assign(
         { ...wonOnNumber },
@@ -328,7 +325,7 @@ export default {
       }, 8000);
     },
 
-    async giveCredits(wonAmount) {
+    async giveCredits(wonAmount) {                                        // Sends the won credits too the users
       console.log(wonAmount, "test");
       try {
         await sanity
@@ -344,7 +341,7 @@ export default {
       this.$emit("updateUserInfo");
     },
 
-    async removeCredits() {
+    async removeCredits() {                                   // Removes the credits right before each spin
       if (this.betSum > 0) {
         try {
           await sanity
@@ -361,7 +358,7 @@ export default {
       }
     },
 
-    checkTotalBets() {
+    checkTotalBets() {                                            // Checks if the user has enough credits too bet the amount chosen
       this.totalBets();
       let userCredits = this.getUserInfo.credits;
       if (this.betSum > this.getUserInfo.credits) {
@@ -369,7 +366,7 @@ export default {
       }
     },
 
-    totalBets() {
+    totalBets() {                                                // Calculates total amount betted this round in an for-loop
       let allBets = this.roundBets;
       let totalBets = 0;
       for (let i = 0; i < allBets.length; i++) {
@@ -378,37 +375,28 @@ export default {
       this.betSum = totalBets;
     },
 
-    fetchRndNumber(min, max) {
+    fetchRndNumber(min, max) {                                // A function that returns a random number from spinPromise
       return Math.floor(Math.random() * (max - min)) + min;
     },
 
-    sortedRoulettePallet() {
-      const roulettePallet = [...this.getRoulettePallet];
+    sortedRoulettePallet() {                                  // Sorts the roulettePallet after number from low to high too be
+      const roulettePallet = [...this.getRoulettePallet];     // Used for the roulette Table
 
       const sortedRoulettePallet = roulettePallet.sort(
         (a, b) => a.number - b.number
       );
 
-      /* const numberA = a.number;
-      const numberB = b.number;
-
-      let comparison = 0;
-      if (numberA > numberB) {
-        comparison = 1;
-      } else if (numberA < numberB) {
-        comparison = -1;
-      } */
       return sortedRoulettePallet;
     },
 
     spinPromise(data) {
-      return new Promise((resolve, reject) => {
-        const wrap = document.querySelector(".roulette-container .wrap");
-        const roulettePallet = this.getRoulettePallet;
-        const rouletteImageWidth = 2960;
-        const totalRouletteSection = 37;
-        const sectionWidthPx = rouletteImageWidth / totalRouletteSection;
-        let rndNumber = data;
+      return new Promise((resolve, reject) => {                             // Takes the width of the image that is the roulette in px
+        const wrap = document.querySelector(".roulette-container .wrap");   // Devides it into numbers becouse each number in the image
+        const roulettePallet = this.getRoulettePallet;                      // is 80pxs. Then randomfetches an amount of rotations
+        const rouletteImageWidth = 2960;                                    // wich is how many pixels the the image should move
+        const totalRouletteSection = 37;                                    // imagewidth * rotations. Then applies an css style that
+        const sectionWidthPx = rouletteImageWidth / totalRouletteSection;   // slows the image down based on the amount of slowdowntime
+        let rndNumber = data;                                               // set, and the amount of rotations
 
         let currentPixel = sectionWidthPx * (rndNumber + 1);
         let rotationRnd = this.fetchRndNumber(5, 40);
@@ -433,8 +421,8 @@ export default {
             wrap.style.transition = `background-position ${slowDownTime}s`;
             resolve();
           }, 510);
-          this.checkIfWon(roulettePallet[rndNumber]);
-        }, slowDownTime * 1000 + 2000);
+          this.checkIfWon(roulettePallet[rndNumber]);         // Sends the random number that was selected to check if user won when
+        }, slowDownTime * 1000 + 2000);                       // the wheel has stopped
       });
     },
   },
@@ -484,7 +472,7 @@ export default {
   grid-template-columns: repeat(13, 3rem);
   grid-template-rows: 3rem;
   gap: 0.3rem;
-  /* width: 100%; */
+  width: 100%;
   height: 100%;
   background: #130a20;
   border-radius: 2rem;
@@ -863,6 +851,90 @@ export default {
   100% {
     -webkit-transform: translateX(0);
             transform: translateX(0);
+  }
+}
+
+@media only screen and (max-device-width : 1100px) and (min-device-width : 961px) {
+  .board-container__bettingboard {
+    grid-template-columns: repeat(13, 3rem);
+    grid-template-rows: repeat(3, 3rem);
+    padding: 0.5rem;
+  }
+
+  .betNum {
+    width: 3rem;
+  }
+}
+
+@media only screen and (max-device-width : 960px) and (min-device-width : 789px) {
+
+  h2 {
+    font-size: 1rem;
+  }
+
+  h3 {
+    font-size: 0.8rem;
+  }
+
+  .board-container__bettingboard {
+    grid-template-columns: repeat(13, 2.5rem);
+    grid-template-rows: repeat(3, 2.5rem);
+    padding: 0.4rem;
+  }
+
+  .board-container__user-panel {
+    padding: 1rem;
+  }
+
+  .betNum {
+    width: 2.5rem;
+  }
+
+  .list__chip, .list__chip--selected {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .chip__value {
+    font-size: 0.5rem;
+  }
+}
+
+@media only screen and (max-device-width : 788px) and (min-device-width : 425px) {
+
+  h2 {
+    font-size: 1rem;
+  }
+
+  h3 {
+    font-size: 0.8rem;
+  }
+
+  .board-container__bettingboard {
+    grid-template-columns: repeat(13, 1.75rem);
+    grid-template-rows: repeat(3, 1.75rem);
+    padding: 0.4rem;
+  }
+
+  .board-container__user-panel {
+    padding: 1rem;
+  }
+
+  .betNum {
+    width: 1.75rem;
+  }
+
+  .value__number {
+    font-size: 0.4rem;
+  }
+
+  .list__chip, .list__chip--selected {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .chip__value {
+    font-size: 0.5rem;
   }
 }
 </style>

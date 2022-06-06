@@ -1,6 +1,6 @@
 <template>
   <div class="navBar">
-      <ul class="navBar__list">
+      <ul class="navBar__list">                                         <!--Two buttons that show the login and register module-->
           <li class="list__item">
               <button @click="registerVisible" class="item__button">
                   <img src="" alt="">
@@ -10,7 +10,6 @@
           <li class="list__item">
               <button @click="signInVisible" class="item__button">
                   <p class="button__text">Logg inn</p>
-                  <!-- <img class="button__img" src="/images/right-arrow.png" alt=""> -->
             </button>
           </li>
       </ul>
