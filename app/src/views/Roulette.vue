@@ -138,7 +138,7 @@ export default {
   },
 
   created() {
-    this.socketInstance = io("localhost:5001") // "https://secret-sands-34117.herokuapp.com/" This.socketInstace is where the client recives all the emits from the server
+    this.socketInstance = io("https://secret-sands-34117.herokuapp.com/") // This.socketInstace is where the client recives all the emits from the server
     /* this.socketInstance = io("/api/roulette"); */
 
     this.socketInstance.on("waitNewRound", () => {  // Tells the client to "wait for new round"
