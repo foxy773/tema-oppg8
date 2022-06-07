@@ -76,7 +76,7 @@
           <img class="undo__icon" src="/images/undo.png" alt="" />
         </button>
         <button
-          @click="reBet()"
+          @click="reBet(true)"
           class="user-panel__rebet"
           :class="{
             betsClosed:
@@ -138,7 +138,7 @@ export default {
   },
 
   created() {
-    this.socketInstance = io("https://secret-sands-34117.herokuapp.com/") // This.socketInstace is where the client recives all the emits from the server
+    this.socketInstance = io("localhost:5001") // "https://secret-sands-34117.herokuapp.com/" This.socketInstace is where the client recives all the emits from the server
     /* this.socketInstance = io("/api/roulette"); */
 
     this.socketInstance.on("waitNewRound", () => {  // Tells the client to "wait for new round"
@@ -154,9 +154,9 @@ export default {
       this.serverRoundStatusCode = 2;
     });
 
-    this.socketInstance.on("startGame", (data) => {   // Tells the client to spinn the "wheel" with a random number from 0 to 36
+    this.socketInstance.on("startGame", (data, rotationNumber, sectionOffset) => {   // Tells the client to spinn the "wheel" with a random number from 0 to 36
       this.serverRoundStatusCode = 3;
-      this.spinPromise(data);
+      this.spinPromise(data, rotationNumber, sectionOffset);
     });
 
     this.socketInstance.on("confirmBet", () => {      // Tells the client to decrease an amount from the player in the database
@@ -203,7 +203,7 @@ export default {
         return roulettePallet[number];
       });
 
-      return sortedHistory.reverse().slice(0, 13);      // Reverses the array and only keeps the last 14 numbers
+      return sortedHistory.reverse().slice(0, 17);      // Reverses the array and only keeps the last 14 numbers
     },
   },
 
@@ -244,9 +244,11 @@ export default {
       return test;
     },
 
-    reBet() {                                                     // Bets on all numbers with same bet from previous bet
+    reBet(valid) {                   
+      if (valid && this.betSum === 0) {                                  // Bets on all numbers with same bet from previous bet
       this.roundBets = this.betsHistory                             
-      this.checkTotalBets();     // Checks if the bet exceeds the amount the user "has on hand".
+      this.checkTotalBets();                // Checks if the bet exceeds the amount the user "has on hand".
+      }
     },
 
     addBet(item) {                                                // Takes the number from the button on the roulette table
@@ -284,7 +286,6 @@ export default {
     checkIfWon(winningNumber) {                           // Checks if the user has won by taking the random number from the spin-
       let wonOnNumber = false;                            //promise() and comparing it too the betHistory
       if (this.betSum > 0) {
-        console.log(winningNumber, "winningNumber");
         const allBets = this.sortRoundBets();
         wonOnNumber = allBets.find((e) => e.number === winningNumber.number);
       }
@@ -302,7 +303,6 @@ export default {
       if (wonAmount > 0) {
         this.giveCredits(wonAmount);                                      // Sends the won amount too be sendt to the user
         this.displayWinningScreen(wonOnNumber, wonAmount, winColor);      // Sends the won number, amount and color to the winScreen
-        console.log(wonAmount, "Won amount");
       }
     },
 
@@ -389,34 +389,29 @@ export default {
       return sortedRoulettePallet;
     },
 
-    spinPromise(data) {
+    spinPromise(number, rotationNumber, sectionOffset) {
       return new Promise((resolve, reject) => {                             // Takes the width of the image that is the roulette in px
         const wrap = document.querySelector(".roulette-container .wrap");   // Devides it into numbers becouse each number in the image
         const roulettePallet = this.getRoulettePallet;                      // is 80pxs. Then randomfetches an amount of rotations
         const rouletteImageWidth = 2960;                                    // wich is how many pixels the the image should move
-        const totalRouletteSection = 37;                                    // imagewidth * rotations. Then applies an css style that
-        const sectionWidthPx = rouletteImageWidth / totalRouletteSection;   // slows the image down based on the amount of slowdowntime
-        let rndNumber = data;                                               // set, and the amount of rotations
-
-        let currentPixel = sectionWidthPx * (rndNumber + 1);
-        let rotationRnd = this.fetchRndNumber(5, 40);
-        const rotations = rouletteImageWidth * rotationRnd;
-        currentPixel -= 80;
-
-        currentPixel = this.fetchRndNumber(currentPixel + 2, currentPixel + 79);
+                                                                            // imagewidth * rotations. Then applies an css style that
+                                                                            // slows the image down based on the amount of slowdowntime
+        let rndNumber = number;                                             // set, and the amount of rotations
+        const rotations = rouletteImageWidth * rotationNumber;
+        let currentPixel = sectionOffset
         currentPixel += rotations;
         currentPixel *= -1;
-        const slowDownTime = 24;
+        const slowDownTime = 12;
 
         let chosenPalletSection = roulettePallet[rndNumber];
         console.log(chosenPalletSection, "chosenPalletSection");
-        wrap.style.backgroundPosition =
-          currentPixel + wrap.offsetWidth / 2 + "" + "px";
+        wrap.style.backgroundPosition = currentPixel + wrap.offsetWidth / 2 + "" + "px";
 
         setTimeout(() => {
           wrap.style.transition = "none";
           let pos = (currentPixel * -1 - rotations) * -1 + wrap.offsetWidth / 2;
           wrap.style.backgroundPosition = String(pos) + "px";
+
           setTimeout(() => {
             wrap.style.transition = `background-position ${slowDownTime}s`;
             resolve();
@@ -469,7 +464,7 @@ export default {
 
 .roulette-history {
   display: grid;
-  grid-template-columns: repeat(13, 3rem);
+  grid-template-columns: repeat(17, 3rem);
   grid-template-rows: 3rem;
   gap: 0.3rem;
   width: 100%;
@@ -577,7 +572,7 @@ export default {
   background-color: #424242;
 }
 
-.nr1, .nr3, .nr5, .nr7, .nr9, .nr12, .nr14, .nr16, .nr18, .nr19, .nr21, .nr23, .nr25, .nr27, .nr28, .nr30, .nr32, .nr34, .nr36 {
+.nr1, .nr3, .nr5, .nr7, .nr9, .nr12, .nr14, .nr16, .nr18, .nr19, .nr21, .nr23, .nr25, .nr27, .nr30, .nr32, .nr34, .nr36 {
   background-color: #e53935;
 }
 

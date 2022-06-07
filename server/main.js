@@ -12,7 +12,7 @@ const io = new Server(server, {
 });
 const PORT = process.env.PORT || 5001
 
-app.use(cors({origin:true}))
+app.use(cors({ origin: true }))
 
 app.get("/api/roulette", (req, res) => {
 	console.log("you hit me good darling")
@@ -54,13 +54,21 @@ const schedule = require('node-schedule');
 
 //Functions
 let serverStatusCode = 0
-const tickTime = 10
-const gameTime = 24
+const tickTime = 6
+const betsOpen = 30
+const gameTime = 16
+
 const tickJob = { rule: `*/${tickTime} * * * * *` }
+const betsOpenTimerJob = { rule: `*/${betsOpen} * * * * *` }
 const gameTimerJob = { rule: `*/${gameTime} * * * * *` }
+
+const rouletteImageWidth = 2960;                                    // wich is how many pixels the the image should move
+const totalRouletteSection = 37;                                    // imagewidth * rotations. Then applies an css style that
+const sectionWidthPx = rouletteImageWidth / totalRouletteSection;
 
 let gameTimer
 let ticker
+let openBetsTimer
 
 function checkServer() {
 	if (serverStatusCode === 0) {					//Wait for new round
@@ -70,7 +78,9 @@ function checkServer() {
 
 	} else if (serverStatusCode === 1) {		//Open Bets
 		console.log("[Bets Open!]");
-		io.in("roulette").emit("openBets")
+		openBets()
+		openBetsTimer.reschedule(betsOpenTimerJob)
+		ticker.cancel()
 
 	} else if (serverStatusCode === 2) {		//Close Bets
 		console.log("[Bets Closed!]");
@@ -85,12 +95,41 @@ function checkServer() {
 	}
 }
 
+function openBets() {
+	io.in("roulette").emit("openBets")
+
+	openBetsTimer = schedule.scheduleJob(betsOpenTimerJob, function () {
+		console.log("GAME TIMER RE")
+		openBetsTimer.cancel()
+		ticker.reschedule(tickJob)
+	})
+}
+
 function startGame() {
-	const max = 36
-	const min = 0
-	const newNumber = Math.floor(Math.random() * (max - min)) + min;
-	io.in("roulette").emit("startGame", newNumber)
-	rouletteHistory.push(newNumber)
+	const maxNumber = 36
+	const minNumber = 0
+	const maxRotations = 20
+	const minRotations = 5
+
+	const newNumber = function (min, max) {
+		console.log(min, max, "MIN MAX")
+		return Math.floor(Math.random() * (max - min)) + min
+	}
+
+	let roundNumber = newNumber(minNumber, maxNumber)
+	let rotations = newNumber(minRotations, maxRotations)
+	let sectionOffset
+
+	let currentPixel = sectionWidthPx * (roundNumber + 1);
+	currentPixel -= 80;
+	sectionOffset = newNumber(currentPixel + 2, currentPixel + 79)
+	currentPixel = sectionOffset
+	
+	io.in("roulette").emit("startGame", roundNumber, rotations, currentPixel)
+	console.log(rotations, "rotations")
+	console.log(roundNumber, "roundNumbers")
+	
+rouletteHistory.push(roundNumber)
 	gameTimer = schedule.scheduleJob(gameTimerJob, function () {
 		console.log("GAME TIMER RE")
 		gameTimer.cancel()
