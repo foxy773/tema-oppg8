@@ -145,3 +145,8 @@ ticker = schedule.scheduleJob(tickJob, function () {
 });
 
 app.use(express.static("../app/dist"))
+
+app.all('*', function (req, res) {
+	console.log(req.path, "Path")
+	res.redirect(req.path)
+});
