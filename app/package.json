@@ -1,29 +1,29 @@
 {
-  "name": "first_vue_app",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "vite --mode development",
-    "build": "vite build --mode production",
-    "preview": "vite preview --host",
-    "server": "nodemon main"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@sanity/client": "^3.3.0",
-    "firebase": "^9.8.1",
-    "pusher-js": "^7.1.0-beta",
-    "url": "^0.11.0",
-    "vue": "^3.2.21",
-    "vue-router": "^4.0.12",
-    "vue-socket.io": "^3.0.10",
-    "vuex": "^4.0.2"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^1.9.4",
-    "@vue/compiler-sfc": "^3.2.21",
-    "vite": "^2.6.14"
-  }
+	"name": "first_vue_app",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "vite --mode development",
+		"build": "vite build --mode production",
+		"preview": "vite preview --host",
+		"server": "nodemon main"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@sanity/client": "^3.3.0",
+		"firebase": "^9.8.1",
+		"pusher-js": "^7.1.0-beta",
+		"url": "^0.11.0",
+		"vue": "^3.2.21",
+		"vue-router": "^4.0.12",
+		"vue-socket.io": "^3.0.10",
+		"vuex": "^4.0.2"
+	},
+	"devDependencies": {
+		"@vitejs/plugin-vue": "^1.9.4",
+		"@vue/compiler-sfc": "^3.2.21",
+		"vite": "^2.6.14"
+	}
 }

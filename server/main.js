@@ -124,12 +124,12 @@ function startGame() {
 	currentPixel -= 80;
 	sectionOffset = newNumber(currentPixel + 2, currentPixel + 79)
 	currentPixel = sectionOffset
-	
+
 	io.in("roulette").emit("startGame", roundNumber, rotations, currentPixel)
 	console.log(rotations, "rotations")
 	console.log(roundNumber, "roundNumbers")
-	
-rouletteHistory.push(roundNumber)
+
+	rouletteHistory.push(roundNumber)
 	gameTimer = schedule.scheduleJob(gameTimerJob, function () {
 		console.log("GAME TIMER RE")
 		gameTimer.cancel()
@@ -143,3 +143,5 @@ ticker = schedule.scheduleJob(tickJob, function () {
 	checkServer()
 	serverStatusCode++
 });
+
+app.use(express.static("../app/dist"))

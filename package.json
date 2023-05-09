@@ -1,0 +1,21 @@
+{
+	"name": "tema-oppg8",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "cd server && npm install && cd.. && cd app && npm install && npm run vite:build && cd .. && cd server && npm start"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/foxy773/tema-oppg8.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/foxy773/tema-oppg8/issues"
+	},
+	"homepage": "https://github.com/foxy773/tema-oppg8#readme"
+}
