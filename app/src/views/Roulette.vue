@@ -16,11 +16,11 @@
         <div class="roulette-history">
           <div
             class="roulette-history__number"
-            :class="
-              (item.color,
-              { 'slide-in-animation': this.serverRoundStatusCode === 0 })
-            "
             v-for="item in sortNumberHistory"
+            :class="[
+              item.color,
+              { 'slide-in-animation': serverRoundStatusCode === 0 },
+            ]"
           >
             {{ item.number }}
           </div>
@@ -142,7 +142,9 @@ export default {
   },
 
   created() {
-    this.socketInstance = io("http://localhost:5001"); // This.socketInstace is where the client recives all the emits from the server
+    this.socketInstance = io(
+      "https://torsk-tipping-db798b7da369.herokuapp.com"
+    ); // This.socketInstace is where the client recives all the emits from the server
     /* this.socketInstance = io("/api/roulette"); */
 
     this.socketInstance.on("waitNewRound", () => {
@@ -215,6 +217,7 @@ export default {
       let unsortedHistory = this.getNumberHistory; // based on the roulettePallet in store and returns a new array where
       let roulettePallet = this.getRoulettePallet; // the random numbers from the server amounts to a number and color
       let sortedHistory = [...unsortedHistory].map((number) => {
+        console.log(roulettePallet[number], "TYYYYYYYYYERFDF");
         return roulettePallet[number];
       });
 
@@ -267,9 +270,8 @@ export default {
       if (valid && this.betSum === 0) {
         // Bets on all numbers with same bet from previous bet
         this.roundBets = this.betsHistory;
-      } else {
+        this.checkTotalBets(); // Checks if the bet exceeds the amount the user "has on hand".
       }
-      this.checkTotalBets(); // Checks if the bet exceeds the amount the user "has on hand".
     },
 
     addBet(item) {
@@ -428,6 +430,7 @@ export default {
         const roulettePallet = this.getRoulettePallet; // is 80pxs. Then randomfetches an amount of rotations
         const rouletteImageWidth = 2960; // wich is how many pixels the the image should move
         // imagewidth * rotations. Then applies an css style that
+        console.log(roulettePallet, "roulettePallet");
         // slows the image down based on the amount of slowdowntime
         let rndNumber = number; // set, and the amount of rotations
         const rotations = rouletteImageWidth * rotationNumber;
