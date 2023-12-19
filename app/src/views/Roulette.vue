@@ -142,7 +142,9 @@ export default {
   },
 
   created() {
-    this.socketInstance = io("http://localhost:5001"); // This.socketInstace is where the client recives all the emits from the server
+    this.socketInstance = io(
+      "https://torsk-tipping-db798b7da369.herokuapp.com"
+    ); // This.socketInstace is where the client recives all the emits from the server
     /* this.socketInstance = io("/api/roulette"); */
 
     this.socketInstance.on("waitNewRound", () => {
